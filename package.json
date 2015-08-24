@@ -1,0 +1,34 @@
+{
+  "name": "svg-to-jsx",
+  "version": "0.0.1",
+  "description": "SVG to JSX converter",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test test/*_test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janjakubnanista/svg-to-jsx"
+  },
+  "keywords": [
+    "JSX",
+    "SVG",
+    "React"
+  ],
+  "author": "Ján Jakub Naništa <jan.jakub.nanista@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/janjakubnanista/svg-to-jsx/issues"
+  },
+  "homepage": "https://github.com/janjakubnanista/svg-to-jsx",
+  "dependencies": {
+    "object-assign": "^4.0.1",
+    "q": "^1.4.1",
+    "xml2js": "^0.4.10",
+    "xmlbuilder": "^2.6.4"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.2.5"
+  }
+}
