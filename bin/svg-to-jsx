@@ -11,6 +11,7 @@ if (help) {
     console.log('options:');
     console.log('\t-h, --help\tDisplay this help screen.');
     console.log('\t-o, --output\tOutput filename. if not provided, output will be spit out to stdout.');
+    console.log('\t-r, --root\tID of an SVG element to output.');
 
     return;
 }
@@ -22,8 +23,11 @@ if (!inputFilename) throw new Error('Input file not specified');
 if (!fs.existsSync(inputFilename)) throw new Error('Input file ' + inputFilename + ' does not exist');
 
 var svg = fs.readFileSync(inputFilename);
+var options = {
+    root: argv.r || argv.root
+};
 
-svgtojsx(svg, function(error, jsx) {
+svgtojsx(svg, options, function(error, jsx) {
     if (error) throw error;
 
     if (outputFilename) {

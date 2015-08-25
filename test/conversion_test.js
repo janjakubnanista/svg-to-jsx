@@ -103,5 +103,27 @@ describe('svg-to-jsx', function() {
                 done();
             });
         });
+
+        it('should allow to pick only specific element', function(done) {
+            var input = '<svg version="1.1"><path style="font-family: Verdana"/><path id="root"/></svg>';
+
+            svgToJsx(input, { root: 'root' }, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<path id="root"/>');
+
+                done();
+            });
+        });
+
+        it('should fail when options.root is specified and element cannot be found', function(done) {
+            var input = '<svg version="1.1"><path style="font-family: Verdana"/><path id="root"/></svg>';
+
+            svgToJsx(input, { root: 'unknown' }, function(error) {
+                expect(error).to.have.property('message');
+                expect(error.message).to.be('Cannot find root element unknown');
+
+                done();
+            });
+        });
     });
 });

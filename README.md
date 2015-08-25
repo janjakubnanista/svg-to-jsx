@@ -18,10 +18,20 @@ You can either use the module in your Node.js project or via command line.
 	var svgtojsx = require('svg-to-jsx');
 	
 	var svg = fs.readFileSync('<your SVG file>');
+	var options = {};
 	
 	svgtojsx(svg, function(error, jsx) {
 		// jsx variable now contains your JSX string
 	});
+		
+	# Options can be passed as a second argument
+	svgtojsx(svg, options, function(error, jsx) {
+		// jsx variable now contains your JSX string
+	});
+	
+#### Options
+
+`root` *String* In case you only want to output single SVG element you can set this to its ID.
 
 ### Use from command line
 

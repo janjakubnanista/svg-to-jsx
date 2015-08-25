@@ -6,11 +6,15 @@ var parseString = require('xml2js').parseString;
 var xmlbuilder = require('xmlbuilder');
 var utils = require('./utils.js');
 
+var defaults = {
+    root: null
+};
+
 function cleanupParsedSVGElement(xpath, previousSibling, element) {
     return {
         tagName: element['#name'],
-        attributes: element.$,
-        children: element.$$,
+        attributes: element.$ || {},
+        children: element.$$ || [],
         text: element._
     };
 }
@@ -32,10 +36,10 @@ function parseSVG(svg, callback) {
 function afterParseSVG(parsedSVG) {
     utils.forEach(parsedSVG, function(element) {
         if (element.tagName === 'use') {
-            var referenceHref = element.attributes && element.attributes['xlink:href'] || '';
+            var referenceHref = element.attributes['xlink:href'] || '';
             var referenceID = referenceHref.slice(1);
             var reference = utils.filter(parsedSVG, function(ch) {
-                return ch.attributes && ch.attributes.id === referenceID;
+                return ch.attributes.id === referenceID;
             }).shift();
 
             if (reference) {
@@ -54,7 +58,7 @@ function afterParseSVG(parsedSVG) {
 }
 
 function formatElementForXMLBuilder(element) {
-    var attributes = element.attributes || {};
+    var attributes = element.attributes;
     var children = element.children && element.children.map(formatElementForXMLBuilder);
 
     var result = Object.keys(attributes).reduce(function(hash, name) {
@@ -72,7 +76,18 @@ function formatElementForXMLBuilder(element) {
     return wrapped;
 }
 
-function beforeBuildSVG(parsed) {
+function beforeBuildSVG(options, parsed) {
+    if (options.root) {
+        // Only allow ID selectors for now
+        var root = utils.filter(parsed, function(element) {
+            return element.attributes.id === options.root;
+        }).shift();
+
+        if (!root) throw new Error('Cannot find root element ' + options.root);
+
+        parsed = root;
+    }
+
     return formatElementForXMLBuilder(parsed);
 }
 
@@ -98,11 +113,18 @@ function buildSVG(object) {
         .end({ pretty: true, indent: '\t', newline: '\n' });
 }
 
-module.exports = function svgToJsx(svg, callback) {
+module.exports = function svgToJsx(svg, options, callback) {
+    if (arguments.length === 2) {
+        callback = options;
+        options = {};
+    }
+
+    options = assign({}, defaults, options);
+
     return q
         .nfcall(parseSVG, svg)
         .then(afterParseSVG)
-        .then(beforeBuildSVG)
+        .then(beforeBuildSVG.bind(null, options))
         .then(buildSVG)
         .then(afterBuildSVG)
         .then(function(result) {
