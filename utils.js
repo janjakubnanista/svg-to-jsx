@@ -6,6 +6,12 @@ var ALLOWED_SVG_ATTRIBUTES = 'clipPath cx cy d dx dy fill fillOpacity fontFamily
 var ALLOWED_ATTRIBUTES = ALLOWED_HTML_ATTRIBUTES.concat(ALLOWED_SVG_ATTRIBUTES);
 var ALLOWED_TAGS = 'circle clipPath defs ellipse g line linearGradient mask path pattern polygon polyline radialGradient rect stop svg text tspan'.toLowerCase().split(' ');
 
+exports.cssProperty = function(string) {
+    var unprefixed = string.replace(/^-ms/, 'ms');
+
+    return exports.camelCase(unprefixed);
+};
+
 exports.camelCase = function(string) {
     return string.replace(/(?:-|_)([a-z])/g, function(g) { return g[1].toUpperCase(); });
 };
