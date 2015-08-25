@@ -6,10 +6,6 @@ var parseString = require('xml2js').parseString;
 var xmlbuilder = require('xmlbuilder');
 var utils = require('./utils.js');
 
-var defaults = {
-    removeUseTags: true
-};
-
 function cleanupParsedSVGElement(xpath, previousSibling, element) {
     return {
         tagName: element['#name'],
@@ -19,7 +15,7 @@ function cleanupParsedSVGElement(xpath, previousSibling, element) {
     };
 }
 
-function parseSVG(svg, options, callback) {
+function parseSVG(svg, callback) {
     parseString(svg, {
         explicitArray: true,
         explicitChildren: true,
@@ -86,16 +82,9 @@ function buildSVG(object) {
         .end({ pretty: true, indent: '\t', newline: '\n' });
 }
 
-module.exports = function svgToJsx(svg, options, callback) {
-    if (arguments.length === 2) {
-        callback = options;
-        options = {};
-    }
-
-    options = assign({}, defaults, options);
-
+module.exports = function svgToJsx(svg, callback) {
     return q
-        .nfcall(parseSVG, svg, options)
+        .nfcall(parseSVG, svg)
         .then(afterParseSVG)
         .then(beforeSVGBuild)
         .then(buildSVG)

@@ -82,10 +82,10 @@ describe('svg-to-jsx', function() {
             });
         });
 
-        it('should replace <use/> tags with referenced elements if options.removeUseTags is truthy', function(done) {
+        it('should replace <use/> tags with referenced elements', function(done) {
             var input = '<svg version="1.1"><defs><path id="path" class="path"/></defs><use xlink:href="#path"/></svg>';
 
-            svgToJsx(input, { removeUseTags: true }, function(error, result) {
+            svgToJsx(input, function(error, result) {
                 expect(error).to.be(null);
                 expect(result).to.be('<svg version="1.1">\n\t<defs>\n\t\t<path className="path" id="path"/>\n\t</defs>\n\t<path className="path"/>\n</svg>');
 
