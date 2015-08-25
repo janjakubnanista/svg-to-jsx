@@ -72,8 +72,24 @@ function formatElementForXMLBuilder(element) {
     return wrapped;
 }
 
-function beforeSVGBuild(parsed) {
+function beforeBuildSVG(parsed) {
     return formatElementForXMLBuilder(parsed);
+}
+
+function afterBuildSVG(built) {
+    return built.replace(/style="([^!]*)"/ig, function(matched, styleString) {
+        var style = styleString.split(/\s*;\s*/g).filter(Boolean).reduce(function(hash, rule) {
+            var keyValue = rule.split(/\s*\:\s*(.*)/);
+            var property = utils.cssProperty(keyValue[0]);
+            var value = keyValue[1];
+
+            hash[property] = value;
+
+            return hash;
+        }, {});
+
+        return 'style={' + JSON.stringify(style) + '}';
+    });
 }
 
 function buildSVG(object) {
@@ -86,8 +102,9 @@ module.exports = function svgToJsx(svg, callback) {
     return q
         .nfcall(parseSVG, svg)
         .then(afterParseSVG)
-        .then(beforeSVGBuild)
+        .then(beforeBuildSVG)
         .then(buildSVG)
+        .then(afterBuildSVG)
         .then(function(result) {
             callback(null, result);
         }, function(error) {
