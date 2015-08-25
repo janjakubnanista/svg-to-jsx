@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var argv = require('yargs').argv;
+var svgtojsx = require('../index.js');
+
+var help = argv.h || argv.help;
+if (help) {
+    console.log('svg-to-jsx [options] [input filename]');
+    console.log('');
+    console.log('options:');
+    console.log('\t-h, --help\tDisplay this help screen.');
+    console.log('\t-o, --output\tOutput filename. if not provided, output will be spit out to stdout.');
+
+    return;
+}
+
+var inputFilename = argv._ && argv._[0];
+var outputFilename = argv.o || argv.output;
+
+if (!inputFilename) throw new Error('Input file not specified');
+if (!fs.existsSync(inputFilename)) throw new Error('Input file ' + inputFilename + ' does not exist');
+
+var svg = fs.readFileSync(inputFilename);
+
+svgtojsx(svg, function(error, jsx) {
+    if (error) throw error;
+
+    if (outputFilename) {
+        fs.writeFileSync(outputFilename);
+    } else {
+        process.stdout.write(jsx + '\n');
+    }
+});
