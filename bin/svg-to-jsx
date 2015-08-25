@@ -12,6 +12,7 @@ if (help) {
     console.log('\t-h, --help\tDisplay this help screen.');
     console.log('\t-o, --output\tOutput filename. if not provided, output will be spit out to stdout.');
     console.log('\t-r, --root\tID of an SVG element to output.');
+    console.log('\t    --refs\t<key>=<value> pair(s) of key (SVG element ID) and value (JSX ref value), e.g. --refs root=myRef will result in element #root to have attribute ref="myRef".');
 
     return;
 }
@@ -24,7 +25,16 @@ if (!fs.existsSync(inputFilename)) throw new Error('Input file ' + inputFilename
 
 var svg = fs.readFileSync(inputFilename);
 var options = {
-    root: argv.r || argv.root
+    root: argv.r || argv.root,
+    refs: argv.refs && argv.refs.reduce(function(hash, refDefinition) {
+        var keyValue = refDefinition.split('=');
+        var id = keyValue[0];
+        var ref = keyValue[1];
+
+        hash[id] = ref;
+
+        return hash;
+    }, {})
 };
 
 svgtojsx(svg, options, function(error, jsx) {

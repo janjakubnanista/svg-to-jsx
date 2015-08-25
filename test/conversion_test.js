@@ -120,7 +120,31 @@ describe('svg-to-jsx', function() {
 
             svgToJsx(input, { root: 'unknown' }, function(error) {
                 expect(error).to.have.property('message');
-                expect(error.message).to.be('Cannot find root element unknown');
+                expect(error.message).to.be('Cannot find root element #unknown');
+
+                done();
+            });
+        });
+
+        it('should add refs to specific elements', function(done) {
+            var input = '<svg version="1.1"><path id="root"/></svg>';
+            var options = { refs: { root: 'myRef' } };
+
+            svgToJsx(input, options, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1">\n\t<path id="root" ref="myRef"/>\n</svg>');
+
+                done();
+            });
+        });
+
+        it('should fail when options.root is specified and element cannot be found', function(done) {
+            var input = '<svg version="1.1"><path id="root"/></svg>';
+            var options = { refs: { unknown: 'myRef' } };
+
+            svgToJsx(input, options, function(error) {
+                expect(error).to.have.property('message');
+                expect(error.message).to.be('Cannot find element #unknown for ref myRef');
 
                 done();
             });

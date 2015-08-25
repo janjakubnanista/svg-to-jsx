@@ -70,3 +70,9 @@ exports.filter = function(element, test) {
 
     return filtered;
 };
+
+exports.findById = function(element, id) {
+    return exports.filter(element, function(node) {
+        return node.attributes.id === id;
+    }).shift() || null;
+}

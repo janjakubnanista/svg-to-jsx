@@ -7,7 +7,8 @@ var xmlbuilder = require('xmlbuilder');
 var utils = require('./utils.js');
 
 var defaults = {
-    root: null
+    root: null,
+    refs: null
 };
 
 function cleanupParsedSVGElement(xpath, previousSibling, element) {
@@ -78,14 +79,21 @@ function formatElementForXMLBuilder(element) {
 
 function beforeBuildSVG(options, parsed) {
     if (options.root) {
-        // Only allow ID selectors for now
-        var root = utils.filter(parsed, function(element) {
-            return element.attributes.id === options.root;
-        }).shift();
-
-        if (!root) throw new Error('Cannot find root element ' + options.root);
+        var root = utils.findById(parsed, options.root);
+        if (!root) throw new Error('Cannot find root element #' + options.root);
 
         parsed = root;
+    }
+
+    if (options.refs) {
+        Object.keys(options.refs).forEach(function(id) {
+            var ref = options.refs[id];
+
+            var element = utils.findById(parsed, id);
+            if (!element) throw new Error('Cannot find element #' + id + ' for ref ' + ref);
+
+            element.attributes.ref = ref;
+        });
     }
 
     return formatElementForXMLBuilder(parsed);
