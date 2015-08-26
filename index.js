@@ -7,6 +7,7 @@ var xmlbuilder = require('xmlbuilder');
 var utils = require('./utils.js');
 
 var defaults = {
+    passProps: false,
     root: null,
     refs: null
 };
@@ -96,23 +97,29 @@ function beforeBuildSVG(options, parsed) {
         });
     }
 
+    if (options.passProps) {
+        parsed.attributes.passProps = 1;
+    }
+
     return formatElementForXMLBuilder(parsed);
 }
 
 function afterBuildSVG(built) {
-    return built.replace(/style="([^!]*)"/ig, function(matched, styleString) {
-        var style = styleString.split(/\s*;\s*/g).filter(Boolean).reduce(function(hash, rule) {
-            var keyValue = rule.split(/\s*\:\s*(.*)/);
-            var property = utils.cssProperty(keyValue[0]);
-            var value = keyValue[1];
+    return built
+        .replace(/style="([^!]*)"/ig, function(matched, styleString) {
+            var style = styleString.split(/\s*;\s*/g).filter(Boolean).reduce(function(hash, rule) {
+                var keyValue = rule.split(/\s*\:\s*(.*)/);
+                var property = utils.cssProperty(keyValue[0]);
+                var value = keyValue[1];
 
-            hash[property] = value;
+                hash[property] = value;
 
-            return hash;
-        }, {});
+                return hash;
+            }, {});
 
-        return 'style={' + JSON.stringify(style) + '}';
-    });
+            return 'style={' + JSON.stringify(style) + '}';
+        })
+        .replace(/passProps="1"/, '{...this.props}');
 }
 
 function buildSVG(object) {

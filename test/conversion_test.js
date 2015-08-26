@@ -149,5 +149,17 @@ describe('svg-to-jsx', function() {
                 done();
             });
         });
+
+        it('should pass props to root tag if passProps is truthy', function(done) {
+            var input = '<svg version="1.1"></svg>';
+            var options = { passProps: true };
+
+            svgToJsx(input, options, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1" {...this.props}/>');
+
+                done();
+            });
+        });
     });
 });
