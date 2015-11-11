@@ -57,6 +57,31 @@ will result in element with ID `mySvgElement` to be accessible via `this.refs.re
 	# To output to file
 	$ svg-to-jsx -o <path to JSX file> <path to an SVG file>
 
+## Notes
+
+`<use/>` tags are not allowed in JSX. Element that is referenced by `<use/>` tag's `xlink:href` attribute is looked up, it's `id`
+is discarded and it replaces the original `<use/>` tag.
+
+Suppose you have an SVG file with following structure:
+
+	<polygon id="mask-path" points="497,129 537.1,135.3 494.4,215.8"/>
+    <clipPath id="mask">
+        <use xlink:href="#mask-path" overflow="visible"/>
+    </clipPath>
+    <g id="group" clip-path="url(#mask)">
+    	<!-- Group contents -->
+    </g>
+
+Then of course React won't support `<use/>` tags and you would end up unmasked `#group`. So the `<use/>` tags are replaced and you end up with following structure which is supported by React:
+
+	<polygon id="mask-path" points="497,129 537.1,135.3 494.4,215.8"/>
+    <clipPath id="mask">
+    	<polygon points="497,129 537.1,135.3 494.4,215.8"/>
+    </clipPath>
+    <g id="group" clip-path="url(#mask)">
+    	<!-- Group contents -->
+    </g>
+
 ## Testing
 
 To run unit test just execute
