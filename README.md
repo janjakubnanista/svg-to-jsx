@@ -2,6 +2,8 @@
 
 Simple module that consumes SVG and spits out JSX. As simple as that.
 
+**If you're using gulp** you might find [`gulp-svg-to-jsx`](https://github.com/janjakubnanista/gulp-svg-to-jsx) interesting.
+
 ## Installation
 
 `svg-to-jsx` is a node module. To install you have to have Node.js and NPM installed on your machine.
