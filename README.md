@@ -31,6 +31,13 @@ You can either use the module in your Node.js project or via command line.
 		// jsx variable now contains your JSX string
 	});
 
+    // svgtojsx returns a promise
+	svgtojsx(svg, options).then(function(jsx) {
+        // jsx variable now contains your JSX string
+    }, function(error) {
+        // handle errors here
+    });
+
 #### Options
 
 `root` *String* In case you only want to output single SVG element you can set this to its ID.
