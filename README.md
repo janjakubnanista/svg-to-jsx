@@ -26,7 +26,7 @@ You can either use the module in your Node.js project or via command line.
 		// jsx variable now contains your JSX string
 	});
 
-	# Options can be passed as a second argument
+	// Options can be passed as a second argument
 	svgtojsx(svg, options, function(error, jsx) {
 		// jsx variable now contains your JSX string
 	});
