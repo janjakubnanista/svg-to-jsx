@@ -1,8 +1,10 @@
 # svg-to-jsx
 
+[![Build Status](https://travis-ci.org/janjakubnanista/svg-to-jsx.svg?branch=master)](https://travis-ci.org/janjakubnanista/svg-to-jsx)
+
 Simple module that consumes SVG and spits out JSX. As simple as that.
 
-**If you're using gulp** you might find [`gulp-svg-to-jsx`](https://github.com/janjakubnanista/gulp-svg-to-jsx) interesting.
+**Hey!** If you're using `gulp` you might find [`gulp-svg-to-jsx`](https://github.com/janjakubnanista/gulp-svg-to-jsx) interesting.
 
 ## Installation
 
