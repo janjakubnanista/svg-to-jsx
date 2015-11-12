@@ -16,26 +16,17 @@ You can either use the module in your Node.js project or via command line.
 
 ### Use as a node module
 
-	var fs = require('fs');
-	var svgtojsx = require('svg-to-jsx');
+    var svgtojsx = require('svg-to-jsx');
+    var svg = '<svg version="1.1"><path id="myPath" style="font-family: Verdana; margin-bottom: 10px; -webkit-transition: all; ms-transition: all;"/></svg>';
 
-	var svg = fs.readFileSync('<your SVG file>');
-	var options = {};
+    // You can use svgtojsx with old school callbacks
+    svgtojsx(svg, function(error, jsx) {
+        // ...
+    });
 
-	svgtojsx(svg, function(error, jsx) {
-		// jsx variable now contains your JSX string
-	});
-
-	// Options can be passed as a second argument
-	svgtojsx(svg, options, function(error, jsx) {
-		// jsx variable now contains your JSX string
-	});
-
-    // svgtojsx returns a promise
-	svgtojsx(svg, options).then(function(jsx) {
-        // jsx variable now contains your JSX string
-    }, function(error) {
-        // handle errors here
+    // The returned object is a promise though, you might prefer that
+    svgtojsx(svg).then(function(jsx) {
+        // ...
     });
 
 #### Options

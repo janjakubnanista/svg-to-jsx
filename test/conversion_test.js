@@ -37,6 +37,34 @@ describe('svg-to-jsx', function() {
         });
     });
 
+    context('promise', function() {
+        it('should return promise that resolves', function(done) {
+            var input = '<svg version="1.1"><text font-family="Verdana"/></svg>';
+
+            svgToJsx(input).then(function() {
+                done();
+            });
+        });
+
+        it('should return promise that resolves with valid JSX', function(done) {
+            var input = '<svg version="1.1"><text font-family="Verdana"/></svg>';
+
+            svgToJsx(input).then(function(jsx) {
+                expect(jsx).to.be('<svg version="1.1">\n\t<text fontFamily="Verdana"/>\n</svg>');
+
+                done();
+            }).done();
+        });
+
+        it('should return a promise that rejects', function(done) {
+            var input = '<svg version="1.1"><text></svg>';
+
+            svgToJsx(input).then(null, function() {
+                done();
+            });
+        });
+    });
+
     context('output', function() {
         it('should camelCase all attributes', function(done) {
             var input = '<svg version="1.1"><text font-family="Verdana"/></svg>';

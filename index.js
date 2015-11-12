@@ -136,16 +136,20 @@ module.exports = function svgToJsx(svg, options, callback) {
 
     options = assign({}, defaults, options);
 
-    return q
+    var promise = q
         .nfcall(parseSVG, svg)
         .then(afterParseSVG)
         .then(beforeBuildSVG.bind(null, options))
         .then(buildSVG)
-        .then(afterBuildSVG)
-        .then(function(result) {
+        .then(afterBuildSVG);
+
+    if (callback) {
+        promise.then(function(result) {
             callback(null, result);
         }, function(error) {
             callback(error, null);
-        })
-        .done();
+        });
+    }
+
+    return promise;
 };
