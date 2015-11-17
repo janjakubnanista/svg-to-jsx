@@ -4,7 +4,7 @@
 
 Simple module that consumes SVG and spits out JSX. As simple as that.
 
-**Hey!** If you're using `gulp` you might find [`gulp-svg-to-jsx`](https://github.com/janjakubnanista/gulp-svg-to-jsx) interesting.
+**Hey!** If you're using `gulp` you might find [`gulp-svg-to-jsx`](https://github.com/janjakubnanista/gulp-svg-to-jsx) interesting. And if you're using `webpack` you might like [`svg-jsx-loader`](https://github.com/janjakubnanista/svg-jsx-loader) that wraps this module for use as a webpack loader.
 
 ## Installation
 
