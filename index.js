@@ -45,10 +45,12 @@ function afterParseSVG(parsedSVG) {
             }).shift();
 
             if (reference) {
-                element.attributes = assign({}, reference.attributes, { id: null });
+                element.attributes = assign({}, reference.attributes);
                 element.children = reference.children;
                 element.tagName = reference.tagName;
                 element.text = reference.text;
+
+                delete element.attributes.id;
             }
         }
 
@@ -144,7 +146,7 @@ module.exports = function svgToJsx(svg, options, callback) {
         .then(afterBuildSVG);
 
     if (callback) {
-        promise.then(function(result) {
+        promise.done(function(result) {
             callback(null, result);
         }, function(error) {
             callback(error, null);

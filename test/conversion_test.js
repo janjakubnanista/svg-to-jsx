@@ -89,11 +89,33 @@ describe('svg-to-jsx', function() {
         });
 
         it('should remove unsupported attributes', function(done) {
-            var input = '<svg version="1.1"><path invalid-attribute="1" xlink:href="#id"/></svg>';
+            var input = '<svg version="1.1"><path invalid-attribute="1"/></svg>';
 
             svgToJsx(input, function(error, result) {
                 expect(error).to.be(null);
                 expect(result).to.be('<svg version="1.1">\n\t<path/>\n</svg>');
+
+                done();
+            });
+        });
+
+        it('should unnamespace xlink attributes', function(done) {
+            var input = '<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"><path xlink:href="#id"/></svg>';
+
+            svgToJsx(input, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1">\n\t<path xlinkHref="#id"/>\n</svg>');
+
+                done();
+            });
+        });
+
+        it('should unnamespace xml attributes', function(done) {
+            var input = '<svg version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"><path xml:base="/ole"/></svg>';
+
+            svgToJsx(input, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1">\n\t<path xmlBase="/ole"/>\n</svg>');
 
                 done();
             });

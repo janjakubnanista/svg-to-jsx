@@ -52,7 +52,14 @@ describe('utils', function() {
         });
 
         it('should remove unsupported attributes', function() {
-            expect(utils.sanitizeAttributes({ 'xlink:href': 'url(#id)' })).to.eql({});
+            expect(utils.sanitizeAttributes({ 'invalid-attribute': 'url(#id)' })).to.eql({});
+        });
+    });
+
+    context('unnamespaceAttributeName()', function() {
+        it('should replace namespaced attribute names with camel cased ones', function() {
+            expect(utils.unnamespaceAttributeName('xlink:href')).to.be('xlinkHref');
+            expect(utils.unnamespaceAttributeName('xml:base')).to.be('xmlBase');
         });
     });
 });
