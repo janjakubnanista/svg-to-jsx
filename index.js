@@ -108,7 +108,7 @@ function beforeBuildSVG(options, parsed) {
 
 function afterBuildSVG(built) {
     return built
-        .replace(/style="([^!]*)"/ig, function(matched, styleString) {
+        .replace(/style="((?:[^"\\]|\\.)*)"/ig, function(matched, styleString) {
             var style = styleString.split(/\s*;\s*/g).filter(Boolean).reduce(function(hash, rule) {
                 var keyValue = rule.split(/\s*\:\s*(.*)/);
                 var property = utils.cssProperty(keyValue[0]);
