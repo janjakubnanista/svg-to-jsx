@@ -43,7 +43,7 @@ svgtojsx(svg, options, function(error, jsx) {
     if (error) throw error;
 
     if (outputFilename) {
-        fs.writeFileSync(outputFilename);
+        fs.writeFileSync(outputFilename, jsx);
     } else {
         process.stdout.write(jsx + '\n');
     }
