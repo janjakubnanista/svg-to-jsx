@@ -211,43 +211,5 @@ describe('svg-to-jsx', function() {
                 done();
             });
         });
-
-        context('when functional is truthy', function() {
-            it('should output JavaScript file that exports render function', function(done) {
-                var input = '<svg version="1.1"></svg>';
-                var options = { functional: true };
-
-                svgToJsx(input, options, function(error, result) {
-                    expect(error).to.be(null);
-                    expect(result).to.be('var React = require(\'react\');\n\nmodule.exports = function (props) {\n    return <svg version="1.1"/>\n}\n');
-
-                    done();
-                });
-            });
-
-            it('should use componentName to name the exported function', function(done) {
-                var input = '<svg version="1.1"></svg>';
-                var options = { functional: true, componentName: 'MyComponent' };
-
-                svgToJsx(input, options, function(error, result) {
-                    expect(error).to.be(null);
-                    expect(result).to.be('var React = require(\'react\');\n\nmodule.exports = function MyComponent(props) {\n    return <svg version="1.1"/>\n}\n');
-
-                    done();
-                });
-            });
-
-            it('should use props instead of this.props when passProps is truthy', function(done) {
-                var input = '<svg version="1.1"></svg>';
-                var options = { functional: true, passProps: true };
-
-                svgToJsx(input, options, function(error, result) {
-                    expect(error).to.be(null);
-                    expect(result).to.be('var React = require(\'react\');\n\nmodule.exports = function (props) {\n    return <svg version="1.1" {...props}/>\n}\n');
-
-                    done();
-                });
-            });
-        });
     });
 });
