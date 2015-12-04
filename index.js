@@ -1,7 +1,10 @@
 'use strict';
 
+var fs = require('fs');
 var q = require('q');
 var assign = require('object-assign');
+var mustache = require('mustache');
+var path = require('path');
 var parseString = require('xml2js').parseString;
 var xmlbuilder = require('xmlbuilder');
 var utils = require('./utils.js');
@@ -9,8 +12,18 @@ var utils = require('./utils.js');
 var defaults = {
     passProps: false,
     root: null,
-    refs: null
+    refs: null,
+    functional: false,
+    componentName: null
 };
+
+function renderTemplate(name, options, jsx) {
+    var templateFilename = path.join(__dirname, 'templates', name + '.js.tmpl');
+    if (!fs.existsSync(templateFilename)) throw new Error('Invalid output style: `' + name + '`');
+
+    var template = fs.readFileSync(templateFilename).toString('utf8');
+    return mustache.render(template, { options: options, jsx: jsx });
+}
 
 function cleanupParsedSVGElement(xpath, previousSibling, element) {
     return {
@@ -106,8 +119,11 @@ function beforeBuildSVG(options, parsed) {
     return formatElementForXMLBuilder(parsed);
 }
 
-function afterBuildSVG(built) {
-    return built
+function afterBuildSVG(options, built) {
+    var functional = options.functional;
+    var propsProperty = functional ? 'props' : 'this.props';
+
+    var jsx = built
         .replace(/style="((?:[^"\\]|\\.)*)"/ig, function(matched, styleString) {
             var style = styleString.split(/\s*;\s*/g).filter(Boolean).reduce(function(hash, rule) {
                 var keyValue = rule.split(/\s*\:\s*(.*)/);
@@ -121,7 +137,11 @@ function afterBuildSVG(built) {
 
             return 'style={' + JSON.stringify(style) + '}';
         })
-        .replace(/passProps="1"/, '{...this.props}');
+        .replace(/passProps="1"/, '{...' + propsProperty + '}');
+
+    if (functional) return renderTemplate('functional', options, jsx);
+
+    return jsx;
 }
 
 function buildSVG(object) {
@@ -143,7 +163,7 @@ module.exports = function svgToJsx(svg, options, callback) {
         .then(afterParseSVG)
         .then(beforeBuildSVG.bind(null, options))
         .then(buildSVG)
-        .then(afterBuildSVG);
+        .then(afterBuildSVG.bind(null, options));
 
     if (callback) {
         promise.done(function(result) {

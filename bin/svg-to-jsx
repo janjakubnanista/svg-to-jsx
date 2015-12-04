@@ -9,6 +9,8 @@ if (help) {
     console.log('svg-to-jsx [options] [input filename]');
     console.log('');
     console.log('options:');
+    console.log('\t-c, --componentName\tExported component name. Used when exporting functional components.');
+    console.log('\t-f, --functional\tExport a functional component. See https://facebook.github.io/react/blog/2015/10/07/react-v0.14.html#stateless-functional-components');
     console.log('\t-h, --help\tDisplay this help screen.');
     console.log('\t-o, --output\tOutput filename. if not provided, output will be spit out to stdout.');
     console.log('\t-p, --pass\tPass this.props to the root JSX tag.');
@@ -26,6 +28,8 @@ if (!fs.existsSync(inputFilename)) throw new Error('Input file ' + inputFilename
 
 var svg = fs.readFileSync(inputFilename);
 var options = {
+    componentName: argv.c || argv.componentName,
+    functional: argv.f || argv.functional,
     passProps: argv.p || argv.pass,
     root: argv.r || argv.root,
     refs: argv.refs && argv.refs.reduce(function(hash, refDefinition) {

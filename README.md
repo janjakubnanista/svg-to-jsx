@@ -33,6 +33,20 @@ You can either use the module in your Node.js project or via command line.
 
 #### Options
 
+`functional` *String* Export a functional component. See [this article](https://facebook.github.io/react/blog/2015/10/07/react-v0.14.html#stateless-functional-components) for more information on functional components.
+
+`componentName` *String* Used as a component (function) name when exporting functional components. The following options
+
+    var options = { functional: true, componentName: 'MyComponent' };
+
+will produce following output:
+
+	var React = require('react');
+	
+	module.exports = function MyComponent(props) {
+		// Generated JSX here
+	}
+
 `root` *String* In case you only want to output single SVG element you can set this to its ID.
 
 `passProps` *Boolean* Set this to true in case you want to pass `props` to the root element.
