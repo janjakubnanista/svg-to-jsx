@@ -59,8 +59,8 @@ will result in element with ID `mySvgElement` to be accessible via `this.refs.re
 
 ## Notes
 
-`<use/>` tags are not allowed in JSX. Element that is referenced by `<use/>` tag's `xlink:href` attribute is looked up, it's `id`
-is discarded and it replaces the original `<use/>` tag.
+`<use/>` tags are not allowed in JSX. The element referenced by a `<use/>` tag's `xlink:href` attribute is looked up, its `id`
+is discarded, and it replaces the original `<use/>` tag.
 
 Suppose you have an SVG file with following structure:
 
