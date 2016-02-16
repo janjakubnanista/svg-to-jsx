@@ -143,6 +143,17 @@ describe('svg-to-jsx', function() {
             });
         });
 
+        it('should merge attributes from <use/> tags with referenced elements', function(done) {
+            var input = '<svg version="1.1"><defs><path id="path" class="path"/></defs><use xlink:href="#path" x="10" y="10"/></svg>';
+
+            svgToJsx(input, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1">\n\t<defs>\n\t\t<path className="path" id="path"/>\n\t</defs>\n\t<path className="path" x="10" y="10"/>\n</svg>');
+
+                done();
+            });
+        });
+
         it('should process style attribute', function(done) {
             var input = '<svg version="1.1"><path style="font-family: Verdana; margin-bottom: 10px; -webkit-transition: all; ms-transition: all;"/></svg>';
 

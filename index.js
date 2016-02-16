@@ -45,12 +45,13 @@ function afterParseSVG(parsedSVG) {
             }).shift();
 
             if (reference) {
-                element.attributes = assign({}, reference.attributes);
+                element.attributes = assign({}, reference.attributes, element.attributes);
                 element.children = reference.children;
                 element.tagName = reference.tagName;
                 element.text = reference.text;
 
                 delete element.attributes.id;
+                delete element.attributes['xlink:href'];
             }
         }
 
