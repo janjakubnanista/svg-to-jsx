@@ -54,12 +54,40 @@ describe('utils', function() {
         it('should remove unsupported attributes', function() {
             expect(utils.sanitizeAttributes({ 'invalid-attribute': 'url(#id)' })).to.eql({});
         });
+
+        it('should preserve data attributes', function() {
+            expect(utils.sanitizeAttributes({ 'data-attribute': 'value' })).to.eql({ 'data-attribute': 'value' });
+        });
     });
 
     context('unnamespaceAttributeName()', function() {
         it('should replace namespaced attribute names with camel cased ones', function() {
             expect(utils.unnamespaceAttributeName('xlink:href')).to.be('xlinkHref');
             expect(utils.unnamespaceAttributeName('xml:base')).to.be('xmlBase');
+        });
+    });
+
+    context('supportsAllAttributes()', function() {
+        it('should return true if element has a hyphen in the tagName', function() {
+            expect(utils.supportsAllAttributes({ tagName: 'an-element', attributes: {} })).to.be(true);
+        });
+
+        it('should return true if element has an is attribute', function() {
+            expect(utils.supportsAllAttributes({ tagName: 'div', attributes: { is: 'element' } })).to.be(true);
+        });
+
+        it('should return false if element does not have an is attribute or a hyphen in the tagName', function() {
+            expect(utils.supportsAllAttributes({ tagName: 'div', attributes: {} })).to.be(false);
+        });
+    });
+
+    context('processAttributeName()', function() {
+        it('should camel case an attribute', function() {
+            expect(utils.processAttributeName('stroke-width')).to.be('strokeWidth');
+        });
+
+        it('should not camel case data attribute', function() {
+            expect(utils.processAttributeName('data-width')).to.be('data-width');
         });
     });
 });

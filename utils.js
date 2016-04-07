@@ -6,6 +6,8 @@ var ALLOWED_SVG_ATTRIBUTES = 'clipPath cx cy d dx dy fill fillOpacity fontFamily
 var ALLOWED_ATTRIBUTES = ALLOWED_HTML_ATTRIBUTES.concat(ALLOWED_SVG_ATTRIBUTES);
 var ALLOWED_TAGS = 'circle clipPath defs ellipse g image line linearGradient mask path pattern polygon polyline radialGradient rect stop svg text tspan'.toLowerCase().split(' ');
 
+var DATA_ATTRIBUTE = /^data-/i;
+
 exports.cssProperty = function(string) {
     var unprefixed = string.replace(/^-ms/, 'ms');
 
@@ -14,6 +16,10 @@ exports.cssProperty = function(string) {
 
 exports.camelCase = function(string) {
     return string.replace(/(?:-|_)([a-z])/g, function(g) { return g[1].toUpperCase(); });
+};
+
+exports.processAttributeName = function(name) {
+    return DATA_ATTRIBUTE.test(name) ? name : exports.camelCase(name);
 };
 
 exports.unnamespaceAttributeName = function(name) {
@@ -30,7 +36,7 @@ exports.sanitizeAttributes = function(attributes) {
         delete attributes.class;
     }
 
-    return ALLOWED_ATTRIBUTES.reduce(function(hash, name) {
+    var allowed = ALLOWED_ATTRIBUTES.reduce(function(hash, name) {
         if (name in attributes) {
             var unnamespacedName = exports.unnamespaceAttributeName(name);
 
@@ -39,6 +45,16 @@ exports.sanitizeAttributes = function(attributes) {
 
         return hash;
     }, {});
+
+    var custom = Object.keys(attributes).filter(function(name) {
+        return DATA_ATTRIBUTE.test(name);
+    }).reduce(function(data, name) {
+        data[name] = attributes[name];
+
+        return data;
+    }, {});
+
+    return Object.assign(allowed, custom);
 };
 
 exports.sanitizeChildren = function(children) {
@@ -85,4 +101,11 @@ exports.findById = function(element, id) {
     return exports.filter(element, function(node) {
         return node.attributes.id === id;
     }).shift() || null;
-}
+};
+
+exports.supportsAllAttributes = function(element) {
+    var hasHyphen = element.tagName.indexOf('-') !== -1;
+    var hasIsAttribute = 'is' in element.attributes;
+
+    return hasHyphen || hasIsAttribute;
+};

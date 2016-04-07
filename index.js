@@ -30,7 +30,7 @@ function parseSVG(svg, callback) {
         normalize: true,
         normalizeTags: true,
         preserveChildrenOrder: true,
-        attrNameProcessors: [utils.camelCase],
+        attrNameProcessors: [utils.processAttributeName],
         validator: cleanupParsedSVGElement
     }, callback);
 }
@@ -55,7 +55,10 @@ function afterParseSVG(parsedSVG) {
             }
         }
 
-        element.attributes = utils.sanitizeAttributes(element.attributes);
+        if (!utils.supportsAllAttributes(element)) {
+            element.attributes = utils.sanitizeAttributes(element.attributes);
+        }
+
         element.children = utils.sanitizeChildren(element.children);
     });
 

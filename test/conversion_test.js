@@ -222,5 +222,16 @@ describe('svg-to-jsx', function() {
                 done();
             });
         });
+
+        it('should preserve data attributes', function(done) {
+            var input = '<svg version="1.1"><path data-id="id"/></svg>';
+
+            svgToJsx(input, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1">\n\t<path data-id="id"/>\n</svg>');
+
+                done();
+            });
+        });
     });
 });
