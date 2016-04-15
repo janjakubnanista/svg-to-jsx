@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 var fs = require('fs');
 var argv = require('yargs').argv;
@@ -13,9 +14,10 @@ if (help) {
     console.log('\t-o, --output\tOutput filename. if not provided, output will be spit out to stdout.');
     console.log('\t-p, --pass\tPass this.props to the root JSX tag.');
     console.log('\t-r, --root\tID of an SVG element to output.');
+    console.log('\t-c, --renderChildren\tRender this.props.children. Can also be a string value - ID of an element to render children into.');
     console.log('\t    --refs\t<key>=<value> pair(s) of key (SVG element ID) and value (JSX ref value), e.g. --refs root=myRef will result in element #root to have attribute ref="myRef".');
 
-    return;
+    process.exit(0);
 }
 
 var inputFilename = argv._ && argv._[0];
@@ -27,6 +29,7 @@ if (!fs.existsSync(inputFilename)) throw new Error('Input file ' + inputFilename
 var svg = fs.readFileSync(inputFilename);
 var options = {
     passProps: argv.p || argv.pass,
+    renderChildren: argv.c || argv.renderChildren,
     root: argv.r || argv.root,
     refs: argv.refs && argv.refs.reduce(function(hash, refDefinition) {
         var keyValue = refDefinition.split('=');
