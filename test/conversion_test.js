@@ -233,5 +233,40 @@ describe('svg-to-jsx', function() {
                 done();
             });
         });
+
+        it('should render children to root element if options.renderChildren is true', function(done) {
+            var input = '<svg version="1.1"></svg>';
+            var options = { renderChildren: true };
+
+            svgToJsx(input, options, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1">\n{this.props.children}</svg>');
+
+                done();
+            });
+        });
+
+        it('should render children to specific element if options.renderChildren is a string value', function(done) {
+            var input = '<svg version="1.1"><path id="root"/></svg>';
+            var options = { renderChildren: 'root' };
+
+            svgToJsx(input, options, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1">\n\t<path id="root">\n{this.props.children}</path>\n</svg>');
+
+                done();
+            });
+        });
+
+        it('should throw an error if options.renderChildren is a string value but there is no eleemnet with that ID', function(done) {
+            var input = '<svg version="1.1"><path id="root"/></svg>';
+            var options = { renderChildren: 'my-own-root' };
+
+            svgToJsx(input, options, function(error) {
+                expect(error).to.not.be(null);
+
+                done();
+            });
+        });
     });
 });

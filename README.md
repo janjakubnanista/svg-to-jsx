@@ -37,6 +37,8 @@ You can either use the module in your Node.js project or via command line.
 
 `passProps` *Boolean* Set this to true in case you want to pass `props` to the root element.
 
+`renderChildren` *Boolean|String* Set this to true in case you want to render *this.props.children* in the root element. If set to string value, this value is interpreted as an element ID and children are rendered into this element. If element already has some text content children are appended to the end.
+
 `refs` *Object* In case you want to be able to access specific elements from your SVG file, you can add `refs` to them. This object's keys are IDs of elements that will be assigned `refs`, the values are the `ref` names, for example:
 
     {

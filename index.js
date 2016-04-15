@@ -8,6 +8,7 @@ var utils = require('./utils.js');
 
 var defaults = {
     passProps: false,
+    passChildren: false,
     root: null,
     refs: null
 };
@@ -105,6 +106,15 @@ function beforeBuildSVG(options, parsed) {
 
     if (options.passProps) {
         parsed.attributes.passProps = 1;
+    }
+
+    if (options.renderChildren) {
+        var passChildrenToSpecificId = typeof(options.renderChildren) === 'string';
+        var passChildrenTo = passChildrenToSpecificId ? utils.findById(parsed, options.renderChildren) : parsed;
+
+        if (!passChildrenTo) throw new Error('Cannot find element #' + options.renderChildren + ' to render children into');
+
+        passChildrenTo.text = [passChildrenTo.text || '', '{this.props.children}'].join('\n');
     }
 
     return formatElementForXMLBuilder(parsed);
