@@ -29,7 +29,7 @@ function parseSVG(svg, callback) {
         explicitRoot: false,
         mergeAttrs: false,
         normalize: true,
-        normalizeTags: true,
+        normalizeTags: false,
         preserveChildrenOrder: true,
         attrNameProcessors: [utils.processAttributeName],
         validator: cleanupParsedSVGElement
