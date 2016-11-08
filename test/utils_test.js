@@ -100,14 +100,14 @@ describe('utils', function() {
         });
 
         it('should not remove supported tags', function() {
-            const actual = [ { tagName: 'linearGradient' } ];
-            const expected = [ { tagName: 'linearGradient' } ];
+            var actual = [ { tagName: 'linearGradient' } ];
+            var expected = [ { tagName: 'linearGradient' } ];
             expect(utils.sanitizeChildren(actual)).to.eql(expected);
         });
 
         it('should remove unsupported tags', function() {
-            const actual = [ { tagName: 'lineargradient' } ];
-            const expected = [];
+            var actual = [ { tagName: 'lineargradient' } ];
+            var expected = [];
             expect(utils.sanitizeChildren(actual)).to.eql(expected);
         });
     });
