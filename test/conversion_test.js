@@ -268,5 +268,15 @@ describe('svg-to-jsx', function() {
                 done();
             });
         });
+
+        it('should allow the vector-effect attribute', function(done) {
+            var input = '<svg version="1.1"><circle cx="13.5" cy="13.5" r="13" vector-effect="non-scaling-stroke" /></svg>';
+
+            svgToJsx(input, function(error, jsx) {
+                expect(jsx).to.contain('vectorEffect');
+
+                done();
+            });
+        });
     });
 });
