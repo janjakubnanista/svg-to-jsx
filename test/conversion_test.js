@@ -268,13 +268,24 @@ describe('svg-to-jsx', function() {
                 done();
             });
         });
-
+      
         it('should preserve case on tag names', function(done) {
             var input = '<svg version="1.1"><linearGradient/></svg>';
 
             svgToJsx(input, function(error, result) {
                 expect(error).to.be(null);
                 expect(result).to.be('<svg version="1.1">\n\t<linearGradient/>\n</svg>');
+
+                done();
+            });
+        });
+
+        it('should allow the vector-effect attribute', function(done) {
+            var input = '<svg version="1.1"><circle cx="13.5" cy="13.5" r="13" vector-effect="non-scaling-stroke" /></svg>';
+
+            svgToJsx(input, function(error, result) {
+                expect(error).to.be(null);
+                expect(result).to.be('<svg version="1.1">\n\t<circle cx="13.5" cy="13.5" r="13" vectorEffect="non-scaling-stroke"/>\n</svg>');
 
                 done();
             });
