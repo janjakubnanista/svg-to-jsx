@@ -6,7 +6,7 @@ var ALLOWED_HTML_ATTRIBUTES = 'accept acceptCharset accessKey action allowFullSc
 var ALLOWED_SVG_ATTRIBUTES = 'clipPath cx cy d dx dy fill fillOpacity fontFamily fontSize fx fy gradientTransform gradientUnits markerEnd markerMid markerStart offset opacity patternContentUnits patternUnits points preserveAspectRatio r rx ry spreadMethod stopColor stopOpacity stroke strokeDasharray strokeLinecap strokeOpacity strokeWidth textAnchor transform version viewBox x1 x2 x y1 y2 y xlink:actuate xlink:arcrole xlink:href xlink:role xlink:show xlink:title xlink:type xml:base xml:lang xml:space'.split(' ');
 
 var ALLOWED_ATTRIBUTES = ALLOWED_HTML_ATTRIBUTES.concat(ALLOWED_SVG_ATTRIBUTES);
-var ALLOWED_TAGS = 'circle clipPath defs ellipse g image line linearGradient mask path pattern polygon polyline radialGradient rect stop svg text tspan'.toLowerCase().split(' ');
+var ALLOWED_TAGS = 'circle clipPath defs ellipse g image line linearGradient mask path pattern polygon polyline radialGradient rect stop svg text tspan'.split(' ');
 
 var DATA_ATTRIBUTE = /^data-/i;
 
