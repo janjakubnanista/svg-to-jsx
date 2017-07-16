@@ -90,4 +90,25 @@ describe('utils', function() {
             expect(utils.processAttributeName('data-width')).to.be('data-width');
         });
     });
+
+    context('sanitizeChildren()', function() {
+        it('should return null if called with falsy parameter', function() {
+            expect(utils.sanitizeChildren()).to.be(null);
+            expect(utils.sanitizeChildren(null)).to.be(null);
+            expect(utils.sanitizeChildren(undefined)).to.be(null);
+            expect(utils.sanitizeChildren(false)).to.be(null);
+        });
+
+        it('should not remove supported tags', function() {
+            var actual = [ { tagName: 'linearGradient' } ];
+            var expected = [ { tagName: 'linearGradient' } ];
+            expect(utils.sanitizeChildren(actual)).to.eql(expected);
+        });
+
+        it('should remove unsupported tags', function() {
+            var actual = [ { tagName: 'lineargradient' } ];
+            var expected = [];
+            expect(utils.sanitizeChildren(actual)).to.eql(expected);
+        });
+    });
 });
