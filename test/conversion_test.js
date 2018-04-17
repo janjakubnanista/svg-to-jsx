@@ -268,7 +268,7 @@ describe('svg-to-jsx', function() {
                 done();
             });
         });
-      
+
         it('should preserve case on tag names', function(done) {
             var input = '<svg version="1.1"><linearGradient/></svg>';
 
