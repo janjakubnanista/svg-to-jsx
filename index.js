@@ -77,7 +77,25 @@ function formatElementForXMLBuilder(element) {
     }, {});
 
     if (element.text) result['#text'] = element.text;
-    if (children && children.length) result['#list'] = children;
+
+    if (children && children.length) {
+        children.forEach(function(child) {
+            var tagName = Object.keys(child)[0];
+            var existingValue = result[tagName];
+            if (existingValue) {
+                if (Array.isArray(existingValue)) {
+                    // existing element array, push new element
+                    existingValue.push(child[tagName]);
+                } else {
+                    // create array with existing and new elements
+                    result[tagName] = [existingValue, child[tagName]];
+                }
+            } else {
+                // first child element with this tag name
+                result[tagName] = child[tagName];
+            }
+        });
+    }
 
     var wrapped = {};
     wrapped[element.tagName] = result;

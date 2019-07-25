@@ -26,14 +26,14 @@
     "object-assign": "^4.0.1",
     "q": "^1.4.1",
     "xml2js": "^0.4.10",
-    "xmlbuilder": "^2.6.4",
+    "xmlbuilder": "^13.0.2",
     "yargs": "^3.21.0"
   },
   "devDependencies": {
-    "babel-eslint": "^4.0.10",
-    "eslint": "^1.2.1",
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.1.0",
     "expect.js": "^0.3.1",
-    "mocha": "^2.2.5"
+    "mocha": "^6.2.0"
   },
   "tonicExampleFilename": "example.js"
 }
