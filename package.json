@@ -1,6 +1,6 @@
 {
   "name": "svg-to-jsx",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "SVG to JSX converter",
   "main": "index.js",
   "scripts": {
