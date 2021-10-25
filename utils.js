@@ -17,6 +17,7 @@ exports.cssProperty = function(string) {
 };
 
 exports.camelCase = function(string) {
+    if(string.indexOf('--') === 0) return string;
     return string.replace(/(?:-|_)([a-z])/g, function(g) { return g[1].toUpperCase(); });
 };
 
